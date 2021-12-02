@@ -9,7 +9,7 @@ const Header = () => {
         <TouchableOpacity>
             <Image 
             style={styles.logo}
-             source={require('../../assets/images/insta-logo.png')}
+             source={require('../../../assets/images/insta-logo.png')}
             /> 
         </TouchableOpacity>
 
