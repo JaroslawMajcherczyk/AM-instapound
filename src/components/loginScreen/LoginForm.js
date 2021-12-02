@@ -11,11 +11,37 @@ import { Formik } from 'formik'
 import * as Yup from 'yup'
 import Validator  from 'email-validator'
 import { NavigationContainer } from '@react-navigation/native'
+import Toast from 'react-native-root-toast'
+
+import UserAuthorization from '../../utils/UserAuthorization'
 
 
+const processLoginForm = (username, password, navigateToHome) => {
+    UserAuthorization.requestUserAuthorization(username, password)
+        .then(response => {
+            if (response.status === 200) {
+                UserAuthorization.setUserAuthToken(response.token);
+                Toast.show(`Hello ${username}!`, {
+                    duration: Toast.durations.SHORT,
+                    position: Toast.positions.CENTER,
+                });
+                navigateToHome();
+            } else if (response.status === 400) {
+                Toast.show('Could not log in with provided data, please make sure its valid and try again.', {
+                    duration: Toast.durations.LONG,
+                    position: Toast.positions.CENTER,
+                });
+            } else {
+                Toast.show('Service is temporarily down! Please contact authors!', {
+                    duration: Toast.durations.LONG,
+                    position: Toast.positions.TOP,
+                });
+            }
+        })
+}
 
 
-const LoginForm = () => {
+const LoginForm = ({navigateToHome}) => {
 
     const LoginFormSchema = Yup.object().shape({
         email: Yup.string().email().required('An email is required'),
@@ -28,8 +54,8 @@ const LoginForm = () => {
         <View style={styles.inputWrapper}>
         <Formik
         initialValues={{email:'', password: ''}}
-        onSubmit={(value) => {
-            console.log(value)
+        onSubmit={ (values) => {
+            processLoginForm(values.email, values.password, navigateToHome);
         }}
         validationSchema={LoginFormSchema}
         validateOnMount={true}
@@ -96,12 +122,7 @@ const LoginForm = () => {
             </Pressable>
             
 
-            <View style={styles.signupContainer}>
-            <Text>Don't have an account?</Text>
-            <TouchableOpacity >
-            <Text style={{color: '#6bb0f5'}}>  Sign Up</Text>
-            </TouchableOpacity>
-            </View>
+
            </SafeAreaView>
         )}
         

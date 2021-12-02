@@ -114,12 +114,7 @@ const SignupForm = () => {
             </Pressable>
             
 
-            <View style={styles.signupContainer}>
-            <Text>Already have an account?</Text>
-            <TouchableOpacity>
-            <Text style={{color: '#6bb0f5'}}>  Log In</Text>
-            </TouchableOpacity>
-            </View>
+
            </SafeAreaView>
         )}
         

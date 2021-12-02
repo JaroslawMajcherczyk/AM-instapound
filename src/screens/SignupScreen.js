@@ -1,10 +1,10 @@
 import React from 'react'
-import { View, Text, StyleSheet, Image } from 'react-native'
+import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native'
 import SignupForm from '../components/signupScreen/SignupForm' 
 
 const Instagram_logo = 'https://static.wirtualnemedia.pl/media/top/instagram2016-logo655.png'
 
-const SignupScreen = () => (
+const SignupScreen = ({navigation}) => (
     
         <View style={styles.container}>
             {/**INSTAGRAM_ICON */}
@@ -13,6 +13,13 @@ const SignupScreen = () => (
             </View>
         
             <SignupForm/>
+
+            <View style={styles.loginRedirect}>
+                <Text>Already have an account?</Text>
+                <TouchableOpacity onPress={() => {navigation.navigate('Login')}}>
+                    <Text style={{color: '#6bb0f5'}}>  Log In</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     )
 const styles = StyleSheet.create({
@@ -27,7 +34,11 @@ logoConatiner: {
         marginTop: 70,
     
 },
-
+    loginRedirect: {
+        flexDirection: 'row',
+        marginTop:30,
+        justifyContent: 'center'
+    },
 })    
 
 
