@@ -6,13 +6,11 @@ import { POSTS } from '../components/Data/post.js'
 import BottomTabs from '../components/Home/BottomTabs.js'
 import Header from '../components/Home/Header.js'
 import Post from '../components/Home/Post.js'
-import Stories from '../components/Home/Stories.js'
 
 const HomeScreen = ({navigation}) => {
     return (
         <SafeAreaView style={styles.container}>
        <Header navigation={navigation}/>
-       <Stories />
 
        <ScrollView>
         {POSTS.map((post, index) => (
