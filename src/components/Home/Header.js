@@ -3,7 +3,7 @@ import { View, Text, Image, StyleSheet } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
 
-const Header = () => {
+const Header = ({navigation}) => {
     return (
         <View style={styles.container}>
         <TouchableOpacity>
@@ -14,7 +14,7 @@ const Header = () => {
         </TouchableOpacity>
 
 <View style={styles.iconsContainer}>
-    <TouchableOpacity>
+    <TouchableOpacity onPress={() => {navigation.navigate('Post')}}>
     <Image 
     source={{ 
         uri:'https://img.icons8.com/ios/50/000000/add--v1.png'

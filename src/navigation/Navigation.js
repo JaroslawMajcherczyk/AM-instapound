@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import LoginScreen from '../screens/LoginScreen'
 import SignupScreen from '../screens/SignupScreen'
 import HomeScreen from '../screens/HomeScreen'
+import PostScreen from '../screens/PostScreen'
 
 const Drawer = createDrawerNavigator();
 
@@ -14,6 +15,7 @@ export default function Navigation() {
         <NavigationContainer>
             <Drawer.Navigator>
                 <Drawer.Screen name="Home" component={HomeScreen} />
+                <Drawer.Screen name="Post" component={PostScreen} />
                 <Drawer.Screen name="Login" component={LoginScreen} />
                 <Drawer.Screen name="Signup" component={SignupScreen} />
             </Drawer.Navigator>
