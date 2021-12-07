@@ -9,14 +9,12 @@ import { View,
 
 import { Formik } from 'formik'
 import * as Yup from 'yup'
-import Validator  from 'email-validator'
-import { NavigationContainer } from '@react-navigation/native'
 import Toast from 'react-native-root-toast'
 
 import UserAuthorization from '../../utils/UserAuthorization'
 
 
-const processLoginForm = (username, password, navigateToHome) => {
+const processLoginForm = (username, password, navigateToHome, resetForm) => {
     UserAuthorization.requestUserAuthorization(username, password)
         .then(response => {
             if (response.status === 200) {
@@ -25,6 +23,7 @@ const processLoginForm = (username, password, navigateToHome) => {
                     duration: Toast.durations.SHORT,
                     position: Toast.positions.CENTER,
                 });
+                resetForm();
                 navigateToHome();
             } else if (response.status === 400) {
                 Toast.show('Could not log in with provided data, please make sure its valid and try again.', {
@@ -44,18 +43,18 @@ const processLoginForm = (username, password, navigateToHome) => {
 const LoginForm = ({navigateToHome}) => {
 
     const LoginFormSchema = Yup.object().shape({
-        email: Yup.string().email().required('An email is required'),
+        email: Yup.string().required('An email/username is required to log in!'),
         password: Yup.string()
         .required()
-        .min(6,'Your passwoerd has to have leasr 6 characters ')
+        .min(8,'Your password should be at least 8 characters long!')
     })
 
     return (
         <View style={styles.inputWrapper}>
         <Formik
         initialValues={{email:'', password: ''}}
-        onSubmit={ (values) => {
-            processLoginForm(values.email, values.password, navigateToHome);
+        onSubmit={ (values, {resetForm}) => {
+            processLoginForm(values.email, values.password, navigateToHome, resetForm);
         }}
         validationSchema={LoginFormSchema}
         validateOnMount={true}
@@ -63,19 +62,11 @@ const LoginForm = ({navigateToHome}) => {
         {({handleChange, handleBlur, handleSubmit, values, isValid}) =>(
         
             <SafeAreaView>
-            <View style={[styles.inputField,
-            {borderColor: 
-                values.email.length < 1 || Validator.validate(values.email) 
-                ? "#ccc"
-                 : 'red',
-                },
-            ]}>
+            <View style={[styles.inputField, {borderColor: "#ccc"}]}>
             <TextInput 
             placeholderTextColor='#444'
-            placeholder='Phone number, username or email'
+            placeholder='Username or email'
             autoCapitalize='none'
-            keyboardType='email-address'
-            textContentType='emailAddress'
             autoFocus={true}
             onChangeText={handleChange('email')}
             onBlur={handleBlur('email')}
@@ -89,7 +80,7 @@ const LoginForm = ({navigateToHome}) => {
                 styles.inputField,
                 {
                     borderColor: 
-                    1 > values.password.length || values.password.length > 5
+                    0 === values.password.length || values.password.length > 7
                     ? "#ccc"
                      : 'red',
                     },

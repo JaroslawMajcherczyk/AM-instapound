@@ -29,11 +29,11 @@ function DrawerNav() {
 
 export default function Navigation() {
     const [applicationLoading, setApplicationLoading] = useState(true);
-    let userLoggedIn = false;
+    const [userLoggedIn, setUserLoggedIn] = useState(true);
 
     useEffect(() => {
         UserAuthorization.isUserLoggedIn().then(value => {
-            userLoggedIn = value;
+            setUserLoggedIn(value);
             setApplicationLoading(false);
         })
     })
