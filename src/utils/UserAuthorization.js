@@ -16,6 +16,10 @@ const setUserAuthToken = async (value) => {
         await SecureStore.deleteItemAsync(AUTHORIZATION_KEY);
 }
 
+const isUserLoggedIn = async () => {
+    return await getUserAuthToken() !== null;
+}
+
 const requestUserAuthorization = (login, password) => {
     return axios.post(API_AUTH_TOKEN_URL, {
             username: login,
@@ -32,4 +36,4 @@ const requestUserAuthorization = (login, password) => {
 
 }
 
-export default {requestUserAuthorization, getUserAuthToken, setUserAuthToken}
+export default {requestUserAuthorization, getUserAuthToken, setUserAuthToken, isUserLoggedIn}
