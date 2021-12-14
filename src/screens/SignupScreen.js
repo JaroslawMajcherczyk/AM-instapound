@@ -12,7 +12,7 @@ const SignupScreen = ({navigation}) => (
             <Image source={{uri: Instagram_logo, height:100, width:100 }}/>
             </View>
         
-            <SignupForm/>
+            <SignupForm navigateToHome={() => navigation.navigate('App', {screen: 'Home'})}/>
 
             <View style={styles.loginRedirect}>
                 <Text>Already have an account?</Text>
