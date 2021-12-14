@@ -13,6 +13,7 @@ import {useEffect, useState} from "react";
 import UserAuthorization from '../utils/UserAuthorization'
 import ProfileScreen from "../screens/ProfileScreen";
 import ProfileEditScreen from "../screens/ProfileEditScreen";
+import AppInformationScreen from "../screens/AppInformationScreen";
 
 
 const Drawer = createDrawerNavigator();
@@ -33,6 +34,7 @@ function DrawerNav() {
         <Drawer.Navigator drawerContent={CustomDrawerContent}>
             <Drawer.Screen name="Home" component={HomeScreen}/>
             <Drawer.Screen name="Profile" component={ProfileNavigator}/>
+            <Drawer.Screen name="About" component={AppInformationScreen}/>
             <Drawer.Screen name="Post" component={PostScreen}/>
         </Drawer.Navigator>
     );

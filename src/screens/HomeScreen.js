@@ -6,10 +6,11 @@ import { POSTS } from '../components/Data/post.js'
 import BottomTabs from '../components/Home/BottomTabs.js'
 import Header from '../components/Home/Header.js'
 import Post from '../components/Home/Post.js'
+import GlobalStyles from "../utils/GlobalStyles";
 
 const HomeScreen = ({navigation}) => {
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={GlobalStyles.droidSafeArea}>
        <Header navigation={navigation}/>
 
        <ScrollView>

@@ -1,10 +1,10 @@
 import React, {useState} from 'react'
-import { View, Text, Image, StyleSheet} from 'react-native'
+import {View, Text, Image, StyleSheet, SafeAreaView} from 'react-native'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import { TextInput } from 'react-native-gesture-handler'
 import { Button, Divider } from 'react-native-elements'
+import GlobalStyles from "../../utils/GlobalStyles";
 
 const PLACEHOLDER_IMG = 'https://galeria-wisla.pl/wp-content/uploads/2020/12/placeholder.png'
 
@@ -33,7 +33,7 @@ const PostComponent = () => {
              errors, 
              isValide
         }) => (
-            <SafeAreaView>
+            <SafeAreaView style={GlobalStyles.droidSafeArea}>
             <View style={{margin: 10,
             justifyContent: 'space-between',
             flexDirection: 'row'}}>

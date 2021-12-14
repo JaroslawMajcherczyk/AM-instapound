@@ -1,21 +1,13 @@
 import React from 'react'
-import { Text, StyleSheet, SafeAreaView} from 'react-native'
+import { Text, SafeAreaView} from 'react-native'
+import GlobalStyles from "../utils/GlobalStyles";
 
 const ProfileEditScreen = () => {
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={GlobalStyles.droidSafeArea}>
             <Text>Here you will edit your profile!</Text>
         </SafeAreaView>
     )
 }
-
-const styles = StyleSheet.create({
-    container: { 
-        backgroundColor: 'white',
-        flex: 1,
-    }
-})
-
-
 
 export default ProfileEditScreen

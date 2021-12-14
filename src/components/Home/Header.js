@@ -54,11 +54,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         marginHorizontal: 20,
-        marginTop: 30,
         height:70,
     },
     iconsContainer: {
-       
         flexDirection: 'row',
         marginRight: 20,
     },
