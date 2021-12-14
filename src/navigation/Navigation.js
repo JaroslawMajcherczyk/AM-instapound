@@ -40,9 +40,9 @@ function TabNavigator() {
         return focused ? 25 : 20
     };
     return (
-        <Tab.Navigator>
+        <Tab.Navigator screenOptions={{tabBarShowLabel: false, headerShown: false}}>
             <Tab.Screen
-                name="Home" component={HomeScreen}
+                name="Home Screen" component={HomeScreen}
                 options={{
                     tabBarIcon: ({focused}) => {
                         return <FontAwesome5 name="home" size={getIconSize(focused)} color={getIconColor(focused)}/>
@@ -50,8 +50,9 @@ function TabNavigator() {
                 }}
             />
             <Tab.Screen
-                name="New Photo" component={HomeScreen}
+                name="New Photo" component={PostScreen}
                 options={{
+                    headerShown: true,
                     tabBarIcon: ({focused}) => {
                         return <FontAwesome5 name="camera" size={getIconSize(focused)} color={getIconColor(focused)}/>
                     }
@@ -71,11 +72,10 @@ function TabNavigator() {
 
 function DrawerNav() {
     return (
-        <Drawer.Navigator drawerContent={CustomDrawerContent}>
+        <Drawer.Navigator drawerContent={CustomDrawerContent} screenOptions={{headerShown: false}}>
             <Drawer.Screen name="Home" component={TabNavigator}/>
             <Drawer.Screen name="Profile" component={ProfileNavigator}/>
             <Drawer.Screen name="About" component={AppInformationScreen}/>
-            <Drawer.Screen name="Post" component={PostScreen}/>
         </Drawer.Navigator>
     );
 }
