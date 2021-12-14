@@ -1,7 +1,9 @@
 import * as React from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
+import {FontAwesome5} from '@expo/vector-icons';
 
 import LoginScreen from '../screens/LoginScreen'
 import SignupScreen from '../screens/SignupScreen'
@@ -18,6 +20,7 @@ import AppInformationScreen from "../screens/AppInformationScreen";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 
 function ProfileNavigator() {
     return (
@@ -29,10 +32,47 @@ function ProfileNavigator() {
 }
 
 
+function TabNavigator() {
+    const getIconColor = (focused) => {
+        return focused ? 'black' : 'grey'
+    };
+    const getIconSize = (focused) => {
+        return focused ? 25 : 20
+    };
+    return (
+        <Tab.Navigator>
+            <Tab.Screen
+                name="Home" component={HomeScreen}
+                options={{
+                    tabBarIcon: ({focused}) => {
+                        return <FontAwesome5 name="home" size={getIconSize(focused)} color={getIconColor(focused)}/>
+                    }
+                }}
+            />
+            <Tab.Screen
+                name="New Photo" component={HomeScreen}
+                options={{
+                    tabBarIcon: ({focused}) => {
+                        return <FontAwesome5 name="camera" size={getIconSize(focused)} color={getIconColor(focused)}/>
+                    }
+                }}
+            />
+            <Tab.Screen
+                name="My Pictures" component={HomeScreen}
+                options={{
+                    tabBarIcon: ({focused}) => {
+                        return <FontAwesome5 name="user" size={getIconSize(focused)} color={getIconColor(focused)}/>
+                    }
+                }}
+            />
+        </Tab.Navigator>
+    );
+}
+
 function DrawerNav() {
     return (
         <Drawer.Navigator drawerContent={CustomDrawerContent}>
-            <Drawer.Screen name="Home" component={HomeScreen}/>
+            <Drawer.Screen name="Home" component={TabNavigator}/>
             <Drawer.Screen name="Profile" component={ProfileNavigator}/>
             <Drawer.Screen name="About" component={AppInformationScreen}/>
             <Drawer.Screen name="Post" component={PostScreen}/>
