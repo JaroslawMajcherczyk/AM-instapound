@@ -12,7 +12,6 @@ import * as Yup from 'yup'
 import Toast from 'react-native-root-toast'
 
 import UserAuthorization from '../../utils/UserAuthorization'
-import GlobalStyles from "../../utils/GlobalStyles";
 
 
 const processLoginForm = (username, password, navigateToHome, resetForm) => {
@@ -62,7 +61,7 @@ const LoginForm = ({navigateToHome}) => {
         >
         {({handleChange, handleBlur, handleSubmit, values, isValid}) =>(
         
-            <SafeAreaView style={GlobalStyles.droidSafeArea}>
+            <SafeAreaView>
             <View style={[styles.inputField, {borderColor: "#ccc"}]}>
             <TextInput 
             placeholderTextColor='#444'

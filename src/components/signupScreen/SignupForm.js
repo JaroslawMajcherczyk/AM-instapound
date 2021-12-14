@@ -10,7 +10,6 @@ import { View,
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import Validator  from 'email-validator'
-import GlobalStyles from "../../utils/GlobalStyles";
 
 
 
@@ -37,7 +36,7 @@ const SignupForm = () => {
         >
         {({handleChange, handleBlur, handleSubmit, values, isValid}) =>(
         
-            <SafeAreaView style={GlobalStyles.droidSafeArea}>
+            <SafeAreaView>
             <View style={[styles.inputField,
             {borderColor: 
                 values.email.length < 1 || Validator.validate(values.email) 
