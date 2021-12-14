@@ -11,16 +11,28 @@ import CustomDrawerContent from "../components/CustomDrawer";
 import {Text, View} from "react-native";
 import {useEffect, useState} from "react";
 import UserAuthorization from '../utils/UserAuthorization'
+import ProfileScreen from "../screens/ProfileScreen";
+import ProfileEditScreen from "../screens/ProfileEditScreen";
 
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
+
+function ProfileNavigator() {
+    return (
+        <Stack.Navigator>
+            <Stack.Screen name="ProfileView" component={ProfileScreen}/>
+            <Stack.Screen name="ProfileEdit" component={ProfileEditScreen}/>
+        </Stack.Navigator>
+    );
+}
 
 
 function DrawerNav() {
     return (
         <Drawer.Navigator drawerContent={CustomDrawerContent}>
             <Drawer.Screen name="Home" component={HomeScreen}/>
+            <Drawer.Screen name="Profile" component={ProfileNavigator}/>
             <Drawer.Screen name="Post" component={PostScreen}/>
         </Drawer.Navigator>
     );
