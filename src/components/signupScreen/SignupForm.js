@@ -10,6 +10,7 @@ import { View,
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import Validator  from 'email-validator'
+import {Button} from "native-base";
 
 
 
@@ -101,18 +102,11 @@ const SignupForm = () => {
             />
 
             </View>
-            
-            
-            <Pressable
-            titleSize={20}
-            style={styles.loginButton(isValid)}
-            onPress={handleSubmit}
-            disabled={!isValid}
-        
-            >
-            <Text style={styles.buttonText}>Sign Up</Text>
-            </Pressable>
-            
+
+
+            <Button size="lg" onPress={handleSubmit} isDisabled={!isValid}>
+                Sign Up
+            </Button>
 
 
            </SafeAreaView>

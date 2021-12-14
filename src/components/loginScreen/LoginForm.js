@@ -12,6 +12,7 @@ import * as Yup from 'yup'
 import Toast from 'react-native-root-toast'
 
 import UserAuthorization from '../../utils/UserAuthorization'
+import {Button} from "native-base";
 
 
 const processLoginForm = (username, password, navigateToHome, resetForm) => {
@@ -101,18 +102,10 @@ const LoginForm = ({navigateToHome}) => {
             <View style={{ alignItems:'flex-end', marginBottom: 30}}>
             <Text style={{color: '#6bb0f5'}}>Forgot password?</Text>
             </View>
-            
-            <Pressable
-            titleSize={20}
-            style={styles.loginButton(isValid)}
-            onPress={handleSubmit}
-            disabled={!isValid}
-        
-            >
-            <Text style={styles.buttonText}>Log in</Text>
-            </Pressable>
-            
 
+            <Button size="lg" onPress={handleSubmit} isDisabled={!isValid}>
+                Log in
+            </Button>
 
            </SafeAreaView>
         )}

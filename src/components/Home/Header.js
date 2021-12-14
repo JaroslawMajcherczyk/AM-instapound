@@ -14,7 +14,7 @@ const Header = ({navigation}) => {
         </TouchableOpacity>
 
 <View style={styles.iconsContainer}>
-    <TouchableOpacity onPress={() => {navigation.navigate('Post')}}>
+    <TouchableOpacity onPress={() => {navigation.navigate('New Photo')}}>
     <Image 
     source={{ 
         uri:'https://img.icons8.com/ios/50/000000/add--v1.png'
