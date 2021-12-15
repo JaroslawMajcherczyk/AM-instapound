@@ -6,6 +6,8 @@ import {postFooterIcons} from '../Data/postFooterIcons'
 import {Entypo, FontAwesome, FontAwesome5} from "@expo/vector-icons";
 import {Icon, IconButton} from "native-base";
 import Toast from "react-native-root-toast";
+import DoubleClick from "react-native-double-tap";
+import ApiCalls from "../../utils/ApiCalls";
 
 const PostListItem = ({post}) => {
     const {id, picture, description, like_count, is_liked, uploaded_by} = post;
@@ -19,30 +21,36 @@ const PostListItem = ({post}) => {
         if (isLiked) return;
 
         //api request here
-
-        setIsLiked(true);
-        setLikeCount(likeCount + 1);
+        ApiCalls.likePicture(id).then(success => {
+            if (!success) return;
+            setIsLiked(true);
+            setLikeCount(likeCount + 1);
+        });
     }
 
     const unlikePicture = () => {
         if (!isLiked) return;
 
         // api request here
-
-        setIsLiked(false);
-        setLikeCount(likeCount - 1);
+        ApiCalls.unlikePicture(id).then(success => {
+            if (!success) return;
+            setIsLiked(false);
+            setLikeCount(likeCount - 1);
+        });
     }
 
     return (
         <View style={{marginBottom: 15}}>
             <Divider width={1} orientation='vertical'/>
             <PostHeader uploadedBy={uploaded_by}/>
-            <PostImage imageUrl={picture}/>
-            <View style={{marginHorizontal: 10, marginTop: 10}}>
+            <PostImage imageUrl={picture} isLiked={isLiked} likePicture={likePicture}/>
+            <View style={{marginHorizontal: 5}}>
                 <PostFooter isLiked={isLiked} likePicture={likePicture} unlikePicture={unlikePicture}/>
-                <Likes likeCount={likeCount}/>
-                <Caption username={uploaded_by.username} description={description}/>
-                <CommentsSection commentCount={commentCount}/>
+                <View style={{marginHorizontal: 5}}>
+                    <Likes likeCount={likeCount}/>
+                    <Caption username={uploaded_by.username} description={description}/>
+                    <CommentsSection commentCount={commentCount}/>
+                </View>
             </View>
 
         </View>
@@ -93,17 +101,15 @@ const PostHeader = ({uploadedBy}) => (
     </View>
 )
 
-const PostImage = ({imageUrl}) => (
-    <View style={{
-        width: '100%',
-        height: 450,
-    }}>
-        <Image
-            source={{uri: imageUrl}}
-            style={{height: '100%', resizeMode: 'cover'}}
-        />
-    </View>
-)
+const PostImage = ({imageUrl, isLiked, likePicture}) => {
+
+    const image = (
+        <View style={{width: '100%', height: 450}}>
+            <Image source={{uri: imageUrl}} style={{height: '100%', resizeMode: 'cover'}}/>
+        </View>);
+
+    return isLiked ? image : <DoubleClick doubleTap={likePicture} delay={200}>{image}</DoubleClick>;
+}
 
 const LikePictureIcon = ({likePicture}) => (
     <IconButton
@@ -145,9 +151,8 @@ const PostFooter = ({isLiked, likePicture, unlikePicture}) => {
 }
 
 const Likes = ({likeCount}) => (
-    <View style={{flexDirection: 'row', marginTop: 5}}>
-        <Text style={{fontWeight: '600'}}>
-            {likeCount.toLocaleString('en')} Likes</Text>
+    <View style={{flexDirection: 'row'}}>
+        <Text style={{fontWeight: '600'}}>{likeCount.toLocaleString('en')} Likes</Text>
     </View>
 )
 

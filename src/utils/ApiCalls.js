@@ -38,4 +38,28 @@ const getPictureList = async (userId=null) => {
     return response.data;
 }
 
-export default {registerUser, getPictureList}
+const likePicture = async (pictureId) => {
+    const authToken = await UserAuthorization.getUserAuthToken();
+    const likeUrl = `${PICTURE_URL}${pictureId}/like/`;
+    const response = await axios.post(likeUrl,{}, {
+        headers: {
+            'Authorization': `Token ${authToken}`
+        }
+    });
+
+    return response.status === 204;
+}
+
+const unlikePicture = async (pictureId) => {
+    const authToken = await UserAuthorization.getUserAuthToken();
+    const likeUrl = `${PICTURE_URL}${pictureId}/like/`;
+    const response = await axios.delete(likeUrl, {
+        headers: {
+            'Authorization': `Token ${authToken}`
+        }
+    });
+
+    return response.status === 204;
+}
+
+export default {registerUser, getPictureList, likePicture, unlikePicture}
