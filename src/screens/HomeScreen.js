@@ -25,7 +25,7 @@ const HomeScreen = ({navigation}) => {
     useEffect(() => {updatePosts()}, []);
 
     return (
-        <SafeAreaView style={GlobalStyles.droidSafeArea}>
+        <SafeAreaView style={[GlobalStyles.droidSafeArea, styles.container]}>
             <Header navigation={navigation}/>
             <FlatList
                 data={posts}

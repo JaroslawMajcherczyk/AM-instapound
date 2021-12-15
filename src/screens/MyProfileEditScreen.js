@@ -2,7 +2,7 @@ import React from 'react'
 import { Text, SafeAreaView} from 'react-native'
 import GlobalStyles from "../utils/GlobalStyles";
 
-const ProfileEditScreen = () => {
+const MyProfileEditScreen = () => {
     return (
         <SafeAreaView style={GlobalStyles.droidSafeArea}>
             <Text>Here you will edit your profile!</Text>
@@ -10,4 +10,4 @@ const ProfileEditScreen = () => {
     )
 }
 
-export default ProfileEditScreen
+export default MyProfileEditScreen

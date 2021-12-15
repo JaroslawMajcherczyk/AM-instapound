@@ -13,8 +13,8 @@ import CustomDrawerContent from "../components/CustomDrawer";
 import {Text, View} from "react-native";
 import {useEffect, useState} from "react";
 import UserAuthorization from '../utils/UserAuthorization'
-import ProfileScreen from "../screens/ProfileScreen";
-import ProfileEditScreen from "../screens/ProfileEditScreen";
+import MyProfileScreen from "../screens/MyProfileScreen";
+import MyProfileEditScreen from "../screens/MyProfileEditScreen";
 import AppInformationScreen from "../screens/AppInformationScreen";
 
 
@@ -25,8 +25,8 @@ const Tab = createBottomTabNavigator();
 function ProfileNavigator() {
     return (
         <Stack.Navigator>
-            <Stack.Screen name="ProfileView" component={ProfileScreen}/>
-            <Stack.Screen name="ProfileEdit" component={ProfileEditScreen}/>
+            <Stack.Screen name="My Profile" options={{headerShown: false}} component={MyProfileScreen}/>
+            <Stack.Screen name="Edit Profile" component={MyProfileEditScreen}/>
         </Stack.Navigator>
     );
 }
@@ -72,9 +72,9 @@ function TabNavigator() {
 
 function DrawerNav() {
     return (
-        <Drawer.Navigator drawerContent={CustomDrawerContent} screenOptions={{headerShown: false}}>
-            <Drawer.Screen name="Home" component={TabNavigator}/>
-            <Drawer.Screen name="Profile" component={ProfileNavigator}/>
+        <Drawer.Navigator drawerContent={CustomDrawerContent}>
+            <Drawer.Screen options={{headerShown: false}} name="Home" component={TabNavigator}/>
+            <Drawer.Screen options={{headerShown: false}} name="Profile" component={ProfileNavigator}/>
             <Drawer.Screen name="About" component={AppInformationScreen}/>
         </Drawer.Navigator>
     );
@@ -97,16 +97,13 @@ export default function Navigation() {
 
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName={userLoggedIn ? 'App' : 'Login'}>
-                <Stack.Screen options={{
-                    headerShown: false
-                }} name="Login" component={LoginScreen}/>
-                <Stack.Screen options={{
-                    headerShown: false
-                }} name="Signup" component={SignupScreen}/>
-                <Stack.Screen options={{
-                    headerShown: false
-                }} name="App" component={DrawerNav}/>
+            <Stack.Navigator
+                screenOptions={{headerShown: false}}
+                initialRouteName={userLoggedIn ? 'App' : 'Login'}
+            >
+                <Stack.Screen name="Login" component={LoginScreen}/>
+                <Stack.Screen name="Signup" component={SignupScreen}/>
+                <Stack.Screen name="App" component={DrawerNav}/>
             </Stack.Navigator>
         </NavigationContainer>
     );

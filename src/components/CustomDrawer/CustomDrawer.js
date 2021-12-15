@@ -7,12 +7,20 @@ import {
 import UserAuthorization from '../../utils/UserAuthorization'
 
 function CustomDrawerContent(props) {
+    const logout = () => {
+        UserAuthorization.setUserAuthToken(null).then(() => {
+            props.navigation.reset({
+                index: 0,
+                routes: [{name: 'Login'}]
+            });
+        })
+    }
     return (
         <DrawerContentScrollView {...props}>
             <DrawerItemList {...props} />
             <DrawerItem
                 label="Logout"
-                onPress={() => UserAuthorization.setUserAuthToken(null).then(() => props.navigation.navigate('Login'))}
+                onPress={logout}
             />
         </DrawerContentScrollView>
     );

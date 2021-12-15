@@ -4,6 +4,7 @@ import UserAuthorization from "./UserAuthorization";
 
 const BASE_API_URL = 'https://eryknn2.eu.pythonanywhere.com/api';
 const REGISTER_URL = `${BASE_API_URL}/users/register/`;
+const PROFILE_URL = `${BASE_API_URL}/users/profile/`;
 const PICTURE_URL = `${BASE_API_URL}/pictures/`;
 
 
@@ -62,4 +63,15 @@ const unlikePicture = async (pictureId) => {
     return response.status === 204;
 }
 
-export default {registerUser, getPictureList, likePicture, unlikePicture}
+const getProfile = async () => {
+    const authToken = await UserAuthorization.getUserAuthToken();
+    const response = await axios.get(PROFILE_URL, {
+        headers: {
+            'Authorization': `Token ${authToken}`
+        }
+    })
+
+    return response.data;
+}
+
+export default {registerUser, getPictureList, likePicture, unlikePicture, getProfile}
