@@ -36,11 +36,11 @@ const MyProfileScreen = () => {
     return (
         <SafeAreaView style={GlobalStyles.droidSafeArea}>
             <View>
-                <EditButton style={styles.editButton} onPress={() => nav.navigate('Edit Profile')}/>
                 <ProfilePicture username={user.username} picture={user.picture}/>
                 <View style={styles.descriptionBox}>
                     <Text style={styles.descriptionText}>{user.description}</Text>
                 </View>
+                <EditButton style={styles.editButton} onPress={() => nav.navigate('Edit Profile')}/>
             </View>
         </SafeAreaView>
     )
