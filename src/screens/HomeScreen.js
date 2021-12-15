@@ -8,6 +8,7 @@ import Header from '../components/Home/Header.js'
 import Post from '../components/Home/Post.js'
 import GlobalStyles from "../utils/GlobalStyles";
 import ApiCalls from "../utils/ApiCalls";
+import {PostListItem} from "../components/Post"
 
 const HomeScreen = ({navigation}) => {
     const [posts, setPosts] = useState([]);
@@ -28,9 +29,13 @@ const HomeScreen = ({navigation}) => {
         <SafeAreaView style={GlobalStyles.droidSafeArea}>
             <Header navigation={navigation}/>
             <ScrollView>
-                {POSTS.map((post, index) => (
-                    <Post post={post} key={index}/>
+                {posts.map((post) => (
+                    <PostListItem post={post} key={post.id}/>
                 ))}
+
+                {/*{POSTS.map((post, index) => (*/}
+                {/*    <Post post={post} key={index}/>*/}
+                {/*))}*/}
 
             </ScrollView>
             {/*<BottomTabs icons={bottomTabIcons}/>*/}
