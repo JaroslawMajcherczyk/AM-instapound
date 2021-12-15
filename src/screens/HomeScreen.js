@@ -1,45 +1,38 @@
 import React, {useEffect, useState} from 'react'
-import {View, Text, StyleSheet, SafeAreaView,} from 'react-native'
-import {ScrollView} from 'react-native-gesture-handler'
-import {bottomTabIcons} from '../components/Data/bottomTabIcons.js'
-import {POSTS} from '../components/Data/post.js'
-import BottomTabs from '../components/Home/BottomTabs.js'
+import {StyleSheet, SafeAreaView, FlatList, RefreshControl} from 'react-native'
 import Header from '../components/Home/Header.js'
-import Post from '../components/Home/Post.js'
 import GlobalStyles from "../utils/GlobalStyles";
 import ApiCalls from "../utils/ApiCalls";
 import {PostListItem} from "../components/Post"
 
 const HomeScreen = ({navigation}) => {
     const [posts, setPosts] = useState([]);
+    const [refreshing, setRefreshing] = useState(false);
 
-    const reloadPosts = () => {
-        const requestPosts = async () => {
-            const data = await ApiCalls.getPictureList();
-            setPosts(data);
-            console.log(data);
-        }
-        requestPosts();
-    };
+    const updatePosts = async () => {
+        const data = await ApiCalls.getPictureList();
+        setPosts(data);
+        console.log("UPDATING POSTS");
+    }
+
+    const onRefresh = React.useCallback(async () => {
+        setRefreshing(true);
+        await updatePosts()
+        setRefreshing(false);
+    }, [refreshing]);
 
     // pobieramy z API posty
-    useEffect(reloadPosts, []);
+    useEffect(() => {updatePosts()}, []);
 
     return (
         <SafeAreaView style={GlobalStyles.droidSafeArea}>
             <Header navigation={navigation}/>
-            <ScrollView>
-                {posts.map((post) => (
-                    <PostListItem post={post} key={post.id}/>
-                ))}
-
-                {/*{POSTS.map((post, index) => (*/}
-                {/*    <Post post={post} key={index}/>*/}
-                {/*))}*/}
-
-            </ScrollView>
-            {/*<BottomTabs icons={bottomTabIcons}/>*/}
-
+            <FlatList
+                data={posts}
+                renderItem={({item}) => <PostListItem post={item}/>}
+                keyExtractor={post => post.id}
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+            />
         </SafeAreaView>
     )
 }

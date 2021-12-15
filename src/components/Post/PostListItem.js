@@ -104,8 +104,8 @@ const PostHeader = ({uploadedBy}) => (
 const PostImage = ({imageUrl, isLiked, likePicture}) => {
 
     const image = (
-        <View style={{width: '100%', height: 450}}>
-            <Image source={{uri: imageUrl}} style={{height: '100%', resizeMode: 'cover'}}/>
+        <View style={{width: '100%', aspectRatio: 5/4}}>
+            <Image source={{uri: imageUrl}} style={{height: '100%', resizeMode: 'stretch'}}/>
         </View>);
 
     return isLiked ? image : <DoubleClick doubleTap={likePicture} delay={200}>{image}</DoubleClick>;
