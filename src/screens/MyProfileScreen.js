@@ -34,7 +34,7 @@ const MyProfileScreen = () => {
     }, []);
 
     return (
-        <SafeAreaView style={GlobalStyles.droidSafeArea}>
+        <SafeAreaView style={[GlobalStyles.droidSafeArea, {marginTop: 5}]}>
             <View>
                 <ProfilePicture username={user.username} picture={user.picture}/>
                 <View style={styles.descriptionBox}>
