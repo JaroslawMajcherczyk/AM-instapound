@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {SafeAreaView, StyleSheet, Text, View} from 'react-native'
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {ProfilePicture} from "../components/Profile"
 import ApiCalls from "../utils/ApiCalls";
 import GlobalStyles from "../utils/GlobalStyles";
@@ -23,6 +23,7 @@ const EditButton = ({onPress, style}) => {
 
 const MyProfileScreen = () => {
     const nav = useNavigation();
+    const isFocused = useIsFocused();
     const [user, setUser] = useState({});
 
     useEffect(() => {
@@ -31,7 +32,7 @@ const MyProfileScreen = () => {
             setUser(profile);
         }
         getUser();
-    }, []);
+    }, [isFocused]);
 
     return (
         <SafeAreaView style={[GlobalStyles.droidSafeArea, {marginTop: 5}]}>

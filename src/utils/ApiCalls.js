@@ -1,5 +1,7 @@
 import * as React from 'react';
 import axios from "axios";
+import uuid from 'react-native-uuid';
+
 import UserAuthorization from "./UserAuthorization";
 
 const BASE_API_URL = 'https://eryknn2.eu.pythonanywhere.com/api';
@@ -74,4 +76,32 @@ const getProfile = async () => {
     return response.data;
 }
 
-export default {registerUser, getPictureList, likePicture, unlikePicture, getProfile}
+const updateProfile = async (imageUri, bio) => {
+    const authToken = await UserAuthorization.getUserAuthToken();
+    const id = uuid.v4();
+
+    let formData = new FormData();
+    formData.append('description', bio);
+    formData.append('picture', imageUri ? {
+        uri: imageUri,
+        type: 'image/jpeg',
+        name: `profile-${id}.jpg`,
+    } : null);
+
+
+    try {
+        await axios.put(PROFILE_URL, formData, {
+            headers: {'Authorization': `Token ${authToken}`}
+        })
+        return 'success'
+    } catch (e) {
+        switch (e.response.status) {
+            case 400:
+                return 'error';
+            default:
+                return 'unavailable';
+        }
+    }
+}
+
+export default {registerUser, getPictureList, likePicture, unlikePicture, getProfile, updateProfile}
