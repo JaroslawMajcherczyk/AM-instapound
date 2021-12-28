@@ -25,7 +25,6 @@ const MyPicturesScreen = ({navigation}) => {
     return (
         <FlatList
             contentContainerStyle={{flex: 1}}
-            // columnWrapperStyle={{justifyContent: "space-evenly"}}
             numColumns={3}
             data={posts}
             renderItem={({item}) => (
