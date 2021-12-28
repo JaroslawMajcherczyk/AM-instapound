@@ -41,6 +41,11 @@ const getPictureList = async (userId=null) => {
     return response.data;
 }
 
+const getMyPictureList = async () => {
+    const userId = await UserAuthorization.getUserId();
+    return await getPictureList(userId);
+}
+
 const likePicture = async (pictureId) => {
     const authToken = await UserAuthorization.getUserAuthToken();
     const likeUrl = `${PICTURE_URL}${pictureId}/like/`;
@@ -132,4 +137,4 @@ const uploadPicture = async (imageUri, description) => {
     }
 }
 
-export default {registerUser, getPictureList, likePicture, unlikePicture, getProfile, updateProfile, uploadPicture}
+export default {registerUser, getPictureList, getMyPictureList, likePicture, unlikePicture, getProfile, updateProfile, uploadPicture}

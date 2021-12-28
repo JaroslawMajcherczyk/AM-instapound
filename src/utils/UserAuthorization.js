@@ -60,4 +60,4 @@ const requestUserAuthorization = (login, password) => {
 
 }
 
-export default {requestUserAuthorization, getUserAuthToken, setUserAuthToken, isUserLoggedIn, logoutUser, loginUser}
+export default {requestUserAuthorization, getUserAuthToken, isUserLoggedIn, logoutUser, loginUser, getUserId}
