@@ -104,4 +104,32 @@ const updateProfile = async (imageUri, bio) => {
     }
 }
 
-export default {registerUser, getPictureList, likePicture, unlikePicture, getProfile, updateProfile}
+
+const uploadPicture = async (imageUri, description) => {
+    const authToken = await UserAuthorization.getUserAuthToken();
+    const id = uuid.v4();
+
+    let formData = new FormData();
+    formData.append('description', description);
+    formData.append('picture', imageUri ? {
+        uri: imageUri,
+        type: 'image/jpeg',
+        name: `post-${id}.jpg`,
+    } : null);
+
+    try {
+        await axios.post(PICTURE_URL, formData, {
+            headers: {'Authorization': `Token ${authToken}`}
+        })
+        return 'success'
+    } catch (e) {
+        switch (e.response.status) {
+            case 400:
+                return 'error';
+            default:
+                return 'unavailable';
+        }
+    }
+}
+
+export default {registerUser, getPictureList, likePicture, unlikePicture, getProfile, updateProfile, uploadPicture}

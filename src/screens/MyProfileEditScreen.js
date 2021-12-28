@@ -28,8 +28,6 @@ const MyProfileEditScreen = () => {
             quality: 0.3,
         });
 
-        console.log(result);
-
         if (!result.cancelled) {
             setPicture(result.uri);
         }

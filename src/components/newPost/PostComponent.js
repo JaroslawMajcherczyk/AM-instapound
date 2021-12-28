@@ -1,89 +1,158 @@
-import React, {useState} from 'react'
-import {View, Text, Image, StyleSheet, SafeAreaView} from 'react-native'
-import { Formik } from 'formik'
+import React, {useEffect, useState} from 'react'
+import {View, Text, Image, StyleSheet, SafeAreaView, Alert} from 'react-native'
+import {Formik} from 'formik'
 import * as Yup from 'yup'
-import { TextInput } from 'react-native-gesture-handler'
-import { Button, Divider } from 'react-native-elements'
-import GlobalStyles from "../../utils/GlobalStyles";
-
-const PLACEHOLDER_IMG = 'https://galeria-wisla.pl/wp-content/uploads/2020/12/placeholder.png'
+import {TextInput} from 'react-native-gesture-handler'
+import {Divider} from 'react-native-elements'
+import * as ImagePicker from "expo-image-picker";
+import {useNavigation} from "@react-navigation/native";
+import {Button} from "native-base";
+import ApiCalls from "../../utils/ApiCalls";
+import Toast from "react-native-root-toast";
 
 const uploadPostSchema = Yup.object().shape({
-    imageUrl: Yup.string().url().required('A URL is required'),
+    imageUrl: Yup.string().required('An Image is required'),
     caption: Yup.string().max(2200, 'Caption has reach the character limit'),
 })
 
 
 const PostComponent = () => {
+    const nav = useNavigation();
+    const [statusCamera, requestCameraPermission] = ImagePicker.useCameraPermissions();
 
-    const [thumbnailUrl, setThumbnailUrl] = useState(PLACEHOLDER_IMG)
+    const [thumbnailUrl, setThumbnailUrl] = useState(null)
+    const source = thumbnailUrl !== null ? {uri: thumbnailUrl} : require('../../../assets/images/image-placeholder.png');
+
+    const onTakePicture = async () => {
+        if (!statusCamera.granted) {
+            Alert.alert("Permission Required", "Camera permissions are required for this action!")
+            return;
+        }
+
+        let result = await ImagePicker.launchCameraAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [1.91, 1],
+            quality: 0.3,
+        });
+
+        if (!result.cancelled) {
+            setThumbnailUrl(result.uri);
+            return result.uri;
+        }
+    }
+
+    const onSelectPicture = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [1.91, 1],
+            quality: 0.3,
+        });
+
+        if (!result.cancelled) {
+            setThumbnailUrl(result.uri);
+            return result.uri;
+        }
+    }
+
+    const onSubmit = async ({caption, imageUrl}, {resetForm}) => {
+        const result = await ApiCalls.uploadPicture(imageUrl, caption);
+        if (result === 'success') {
+            Toast.show('Picture uploaded!', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.CENTER,
+            });
+            resetForm();
+            setThumbnailUrl(null);
+            nav.navigate('Home Screen');
+        } else if (result === 'error') {
+            Toast.show('Try other picture!', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.CENTER,
+            });
+        } else {
+            Toast.show('Service is temporarily down! Please contact authors!', {
+                duration: Toast.durations.LONG,
+                position: Toast.positions.CENTER,
+            });
+        }
+    }
+
+    useEffect(() => {
+        requestCameraPermission();
+    }, [])
 
     return (
         <Formik
-        initialValues={{caption: '', imageUrl: ''}}
-        onSubmit={(values) => console.log(values)}
-        validationSchema={uploadPostSchema}
-        validateOnMount={true}
+            initialValues={{caption: '', imageUrl: ''}}
+            onSubmit={onSubmit}
+            validationSchema={uploadPostSchema}
+            validateOnMount={true}
         >
-        
-            {({handleBlur,
-             handleChange, 
-             handleSubmit, 
-             values, 
-             errors, 
-             isValide
-        }) => (
-            <SafeAreaView style={GlobalStyles.droidSafeArea}>
-            <View style={{margin: 10,
-            justifyContent: 'space-between',
-            flexDirection: 'row'}}>
-            <Image source={{uri: thumbnailUrl ? thumbnailUrl: PLACEHOLDER_IMG}}
-            style={{width: 200, height: 180}}
-            />
-            
-            <Divider width={0.2} 
-            orientation='vertical' />
 
-            <View style={{flex: 1, marginLeft: 12}}>
-            <TextInput placeholder='Write a caption...'
-            placeholderTextColor='grey'
-            multiline={true}
-            style={{fontSize: 20}}
-            onChangeText={handleChange('caption')}
-            onBlur={handleBlur('caption')}
-            value={values.caption}
-            />
-              </View>        
-            </View>
+            {({
+                  handleBlur,
+                  handleChange,
+                  handleSubmit,
+                  values,
+                  errors,
+                  isValid
+              }) => (
+                <View>
+                    <View style={{
+                        margin: 10,
+                        justifyContent: 'space-between',
+                        flexDirection: 'row'
+                    }}>
+                        <Image source={source} style={{width: 200, height: 180}}/>
+
+                        <Divider width={0.2}
+                                 orientation='vertical'/>
+
+                        <View style={{flex: 1, marginLeft: 12}}>
+                            <TextInput placeholder='Write a caption...'
+                                       placeholderTextColor='grey'
+                                       multiline={true}
+                                       style={{fontSize: 20}}
+                                       onChangeText={handleChange('caption')}
+                                       onBlur={handleBlur('caption')}
+                                       value={values.caption}
+                            />
+                        </View>
+                    </View>
+                    {errors.imageUrl && (
+                        <Text style={{fontSize: 10, color: 'red'}}>
+                            {errors.imageUrl}
+                        </Text>
+                    )}
+
+                    <Button.Group size="sm" style={{marginTop: 5, alignSelf: "center"}}>
+                        <Button onPress={async () => {
+                            let res = await onTakePicture();
+                            if (res)
+                                handleChange('imageUrl')(res)
+                        }}>
+                            Take a picture
+                        </Button>
+                        <Button onPress={async () => {
+                            let res = await onSelectPicture();
+                            if (res)
+                                handleChange('imageUrl')(res)
+                        }}>
+                            Select picture
+                        </Button>
+                    </Button.Group>
+
+                    <Divider style={{marginVertical: 20}} width={0.2} orientation='horizontal'/>
+
+                    <Button onPress={handleSubmit} isDisabled={!isValid}>
+                        Share
+                    </Button>
+
+                </View>
 
 
-            <Divider width={0.2} 
-            orientation='vertical' />
-
-
-            <TextInput
-            onChange={e => setThumbnailUrl(e.nativeEvent.text)}
-            placeholder='Enter Image Url:'
-            style={{fontSize: 16}}
-            placeholderTextColor='grey'
-            onChangeText={handleChange('imageUrl')}
-            onBlur={handleBlur('imageUrl')}
-            value={values.imageUrl}
-            />   
-
-            
-            {errors.imageUrl && (
-                <Text style={{fontSize: 10, color: 'red'}}>
-                {errors.imageUrl}
-                </Text>
-            )}
-               <Button
-               style={{marginTop: 20}}
-               onPress={handleSubmit} title='Share' disable={!isValide}/>
-
-            </SafeAreaView>
-
-         
             )}
 
         </Formik>
