@@ -16,6 +16,7 @@ import UserAuthorization from '../utils/UserAuthorization'
 import MyProfileScreen from "../screens/MyProfileScreen";
 import MyProfileEditScreen from "../screens/MyProfileEditScreen";
 import AppInformationScreen from "../screens/AppInformationScreen";
+import MyPicturesScreen from "../screens/MyPicturesScreen";
 
 
 const Drawer = createDrawerNavigator();
@@ -59,8 +60,9 @@ function TabNavigator() {
                 }}
             />
             <Tab.Screen
-                name="My Pictures" component={HomeScreen}
+                name="My Pictures" component={MyPicturesScreen}
                 options={{
+                    headerShown: true,
                     tabBarIcon: ({focused}) => {
                         return <FontAwesome5 name="user" size={getIconSize(focused)} color={getIconColor(focused)}/>
                     }

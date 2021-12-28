@@ -1,8 +1,10 @@
 import * as React from 'react';
 import * as SecureStore from 'expo-secure-store';
 import axios from "axios";
+import ApiCalls from "./ApiCalls";
 
 const AUTHORIZATION_KEY = 'user_auth_token';
+const USER_ID = 'user_id';
 const API_AUTH_TOKEN_URL = 'https://eryknn2.eu.pythonanywhere.com/api/auth-token/';
 
 const getUserAuthToken = async () => {
@@ -18,6 +20,28 @@ const setUserAuthToken = async (value) => {
 
 const isUserLoggedIn = async () => {
     return await getUserAuthToken() !== null;
+}
+
+const getUserId = async () => {
+    return await SecureStore.getItemAsync(USER_ID);
+}
+
+const setUserId = async (value) => {
+    if (value !== '' && value !== null && value !== undefined)
+        await SecureStore.setItemAsync(USER_ID, value)
+    else
+        await SecureStore.deleteItemAsync(USER_ID);
+}
+
+const loginUser = async (token) => {
+    await setUserAuthToken(token);
+    const profile = await ApiCalls.getProfile();
+    await setUserId(profile['id']);
+}
+
+const logoutUser = async () => {
+    await setUserAuthToken(null);
+    await setUserId(null);
 }
 
 const requestUserAuthorization = (login, password) => {
@@ -36,4 +60,4 @@ const requestUserAuthorization = (login, password) => {
 
 }
 
-export default {requestUserAuthorization, getUserAuthToken, setUserAuthToken, isUserLoggedIn}
+export default {requestUserAuthorization, getUserAuthToken, setUserAuthToken, isUserLoggedIn, logoutUser, loginUser}

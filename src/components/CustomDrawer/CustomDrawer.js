@@ -8,7 +8,7 @@ import UserAuthorization from '../../utils/UserAuthorization'
 
 function CustomDrawerContent(props) {
     const logout = () => {
-        UserAuthorization.setUserAuthToken(null).then(() => {
+        UserAuthorization.logoutUser().then(() => {
             props.navigation.reset({
                 index: 0,
                 routes: [{name: 'Login'}]

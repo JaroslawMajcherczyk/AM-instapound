@@ -37,7 +37,7 @@ const SignupForm = ({navigateToHome}) => {
             const registrationResponse = await ApiCalls.registerUser(values.email, values.username, values.password, values.confirmPassword);
             if (registrationResponse.status === 'success') {
                 const loginResponse = await UserAuthorization.requestUserAuthorization(values.username, values.password)
-                await UserAuthorization.setUserAuthToken(loginResponse.token);
+                await UserAuthorization.loginUser(loginResponse.token);
                 Toast.show(`Hello ${values.username}!`, {
                     duration: Toast.durations.SHORT,
                     position: Toast.positions.CENTER,

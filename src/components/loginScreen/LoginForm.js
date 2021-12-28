@@ -19,7 +19,7 @@ const processLoginForm = (username, password, navigateToHome, resetForm) => {
     UserAuthorization.requestUserAuthorization(username, password)
         .then(response => {
             if (response.status === 200) {
-                UserAuthorization.setUserAuthToken(response.token);
+                UserAuthorization.loginUser(response.token);
                 Toast.show(`Hello ${username}!`, {
                     duration: Toast.durations.SHORT,
                     position: Toast.positions.CENTER,
