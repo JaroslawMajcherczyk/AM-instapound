@@ -10,8 +10,7 @@ import DoubleClick from "react-native-double-tap";
 import ApiCalls from "../../utils/ApiCalls";
 
 const PostListItem = ({post}) => {
-    const {id, picture, description, like_count, is_liked, uploaded_by} = post;
-    const commentCount = 2; // TODO: fixme after API is amended to return comment count
+    const {id, picture, description, like_count, comment_count, is_liked, uploaded_by} = post;
 
     // state needed for likes
     const [isLiked, setIsLiked] = useState(is_liked);
@@ -49,7 +48,7 @@ const PostListItem = ({post}) => {
                 <View style={{marginHorizontal: 5}}>
                     <Likes likeCount={likeCount}/>
                     <Caption username={uploaded_by.username} description={description}/>
-                    <CommentsSection commentCount={commentCount}/>
+                    <CommentsSection commentCount={comment_count}/>
                 </View>
             </View>
 
@@ -167,7 +166,7 @@ const Caption = ({username, description}) => (
 
 const CommentsSection = ({commentCount}) => (
     <View style={{marginTop: 5}}>
-        {commentCount && (<Text>View {commentCount} {commentCount > 1 ? 'comments' : 'comment'}</Text>)}
+        {commentCount ? (<Text>View {commentCount} {commentCount > 1 ? 'comments' : 'comment'}</Text>) : null}
     </View>
 )
 
