@@ -4,6 +4,7 @@ import {Icon, IconButton} from "native-base";
 import {Entypo, FontAwesome, FontAwesome5} from "@expo/vector-icons";
 import DoubleClick from "react-native-double-tap";
 import Toast from "react-native-root-toast";
+import {useNavigation} from "@react-navigation/native";
 
 export const PostHeader = ({uploadedBy}) => (
     <View style={{
@@ -73,8 +74,8 @@ const UnlikePictureIcon = ({unlikePicture}) => (
         onPress={unlikePicture}
     />
 )
-export const PostFooter = ({isLiked, likePicture, unlikePicture}) => {
-
+export const PostFooter = ({isLiked, likePicture, unlikePicture, postId}) => {
+    const nav = useNavigation();
     return (
         <View style={{flexDirection: 'row'}}>
             <View style={styles.leftFooterIconsContainer}>
@@ -87,7 +88,7 @@ export const PostFooter = ({isLiked, likePicture, unlikePicture}) => {
                     size="sm"
                     icon={<Icon as={FontAwesome5} size={30} name="comment" color="black"/>}
                     _pressed={{bg: null}}
-                    onPress={() => console.log('NAVIGATE TO POST COMMENTS')}
+                    onPress={() => nav.navigate('Home', {screen: 'Post Detail', params: {postId: postId}})}
                 />
             </View>
         </View>

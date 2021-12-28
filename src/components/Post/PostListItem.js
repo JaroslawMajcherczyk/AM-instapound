@@ -39,7 +39,7 @@ const PostListItem = ({post}) => {
             <PostHeader uploadedBy={uploaded_by}/>
             <PostImage imageUrl={picture} isLiked={isLiked} likePicture={likePicture}/>
             <View style={{marginHorizontal: 5}}>
-                <PostFooter isLiked={isLiked} likePicture={likePicture} unlikePicture={unlikePicture}/>
+                <PostFooter isLiked={isLiked} likePicture={likePicture} unlikePicture={unlikePicture} postId={id}/>
                 <View style={{marginHorizontal: 5}}>
                     <Likes likeCount={likeCount}/>
                     <Caption username={uploaded_by.username} description={description}/>

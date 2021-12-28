@@ -17,6 +17,7 @@ import MyProfileScreen from "../screens/MyProfileScreen";
 import MyProfileEditScreen from "../screens/MyProfileEditScreen";
 import AppInformationScreen from "../screens/AppInformationScreen";
 import MyPicturesScreen from "../screens/MyPicturesScreen";
+import PostDetailScreen from "../screens/PostDetailScreen";
 
 
 const Drawer = createDrawerNavigator();
@@ -32,6 +33,14 @@ function ProfileNavigator() {
     );
 }
 
+function PictureNavigator() {
+    return (
+        <Stack.Navigator>
+            <Stack.Screen name="Tabs" options={{headerShown: false}} component={TabNavigator}/>
+            <Stack.Screen name="Post Detail" component={PostDetailScreen}/>
+        </Stack.Navigator>
+    );
+}
 
 function TabNavigator() {
     const getIconColor = (focused) => {
@@ -75,7 +84,7 @@ function TabNavigator() {
 function DrawerNav() {
     return (
         <Drawer.Navigator drawerContent={CustomDrawerContent}>
-            <Drawer.Screen options={{headerShown: false}} name="Home" component={TabNavigator}/>
+            <Drawer.Screen options={{headerShown: false}} name="Home" component={PictureNavigator}/>
             <Drawer.Screen options={{headerShown: false}} name="Profile" component={ProfileNavigator}/>
             <Drawer.Screen name="About" component={AppInformationScreen}/>
         </Drawer.Navigator>

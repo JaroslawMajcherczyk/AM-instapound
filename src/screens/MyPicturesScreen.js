@@ -29,7 +29,7 @@ const MyPicturesScreen = ({navigation}) => {
             numColumns={3}
             data={posts}
             renderItem={({item}) => (
-                <Pressable onPress={() => console.log(item.id)}>
+                <Pressable onPress={() => navigation.navigate('Home', {screen: 'Post Detail', params: {postId: item.id}})}>
                     <Image
                         style={{margin: 1, width: 130, height: 130}}
                         source={{uri: item.picture}}
