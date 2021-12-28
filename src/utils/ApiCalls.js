@@ -27,6 +27,17 @@ const registerUser = (email, username, password, confirmPassword) => {
     })
 }
 
+const getPicture = async (pictureId) => {
+    const authToken = await UserAuthorization.getUserAuthToken();
+    const response = await axios.get(`${PICTURE_URL}/${pictureId}/`, {
+        headers: {
+            'Authorization': `Token ${authToken}`
+        }
+    })
+
+    return response.data;
+}
+
 const getPictureList = async (userId=null) => {
     const authToken = await UserAuthorization.getUserAuthToken();
     const response = await axios.get(PICTURE_URL, {
@@ -137,4 +148,6 @@ const uploadPicture = async (imageUri, description) => {
     }
 }
 
-export default {registerUser, getPictureList, getMyPictureList, likePicture, unlikePicture, getProfile, updateProfile, uploadPicture}
+
+
+export default {registerUser, getPictureList, getMyPictureList, getPicture, likePicture, unlikePicture, getProfile, updateProfile, uploadPicture}
