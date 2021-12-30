@@ -2,12 +2,12 @@ import React, {useState} from "react";
 import ApiCalls from "../../utils/ApiCalls";
 import {Text, View} from "react-native";
 import {Divider} from "react-native-elements";
-import {Caption, CommentsSection, Likes, PostFooter, PostHeader, PostImage} from "./PostComponents";
+import {Caption, CommentList, CommentsSection, Likes, PostFooter, PostHeader, PostImage} from "./PostComponents";
 
 const PostDetail = ({post, userIsOwner}) => {
     if (!post) return <View></View>
 
-    const {id, picture, description, like_count, comment_count, is_liked, uploaded_by} = post;
+    const {id, picture, description, like_count, picture_comments, is_liked, uploaded_by} = post;
 
     // state needed for likes
     const [isLiked, setIsLiked] = useState(is_liked);
@@ -46,9 +46,10 @@ const PostDetail = ({post, userIsOwner}) => {
                     <Caption username={uploaded_by.username} description={description}/>
                 </View>
             </View>
-            <Divider width={0.5} orientation='horizontal'/>
+            <Divider width={1} orientation='horizontal'/>
+            <CommentList comments={picture_comments} />
         </View>
     )
 }
 
-export default PostDetail;
+export default PostDetail; 

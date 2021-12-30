@@ -1,10 +1,12 @@
-import {Image, StyleSheet, Text, View} from "react-native";
+import {FlatList, Image, StyleSheet, Text, View} from "react-native";
 import React, {useState} from "react";
 import {Button, Icon, IconButton, Modal} from "native-base";
 import {Entypo, FontAwesome, FontAwesome5} from "@expo/vector-icons";
 import DoubleClick from "react-native-double-tap";
 import {useNavigation} from "@react-navigation/native";
 import ApiCalls from "../../utils/ApiCalls";
+import {Divider} from "react-native-elements";
+import { format } from "date-fns";
 
 export const PostHeader = ({uploadedBy, userIsOwner, postId, triggerRefresh=null, showDetails=true}) => {
     const nav = useNavigation();
@@ -140,11 +142,46 @@ export const Caption = ({username, description}) => (
         </Text>
     </View>
 )
+
 export const CommentsSection = ({commentCount}) => (
     <View style={{marginTop: 5}}>
         {commentCount ? (<Text>View {commentCount} {commentCount > 1 ? 'comments' : 'comment'}</Text>) : null}
     </View>
 )
+
+export const CommentList = ({comments}) => {
+
+    const Comment = ({comment}) => {
+        const source = comment.created_by.picture !== null ? {uri: comment.created_by.picture} : require('../../../assets/images/user-placeholder.png');
+        const formattedDate = format(new Date(comment.created_at), "yyyy-MM-dd kk:mm");
+
+        return (
+            <View>
+                <View style={styles.commentOuterView}>
+                    <Image style={styles.story} source={source} />
+                    <View style={{marginLeft: 10}}>
+                        <Text>
+                            <Text style={{fontWeight: 'bold'}}>{comment.created_by.username} </Text>
+                            {comment.content}
+                        </Text>
+                        <Text style={styles.dateStyle}>{formattedDate}</Text>
+                    </View>
+                </View>
+                <Divider width={1} orientation='horizontal'/>
+            </View>
+        )
+    }
+
+    return (
+        <FlatList
+            style={{height: 200}}
+            data={comments}
+            renderItem={({item}) => <Comment comment={item}/>}
+            keyExtractor={comment => comment.id}
+        />
+    );
+}
+
 const styles = StyleSheet.create({
     story: {
         width: 35,
@@ -163,4 +200,12 @@ const styles = StyleSheet.create({
         width: '19%',
         justifyContent: 'space-between'
     },
+    commentOuterView: {
+        flexDirection: 'row',
+        marginVertical: 5,
+    },
+    dateStyle: {
+        fontStyle: 'italic',
+        color: 'gray'
+    }
 })
