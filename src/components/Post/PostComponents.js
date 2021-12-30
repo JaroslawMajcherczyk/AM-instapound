@@ -4,11 +4,20 @@ import {Button, Icon, IconButton, Modal} from "native-base";
 import {Entypo, FontAwesome, FontAwesome5} from "@expo/vector-icons";
 import DoubleClick from "react-native-double-tap";
 import {useNavigation} from "@react-navigation/native";
+import ApiCalls from "../../utils/ApiCalls";
 
-export const PostHeader = ({uploadedBy, userIsOwner, postId, showDetails=true}) => {
+export const PostHeader = ({uploadedBy, userIsOwner, postId, triggerRefresh=null, showDetails=true}) => {
     const nav = useNavigation();
     const [showModal, setShowModal] = useState(false);
 
+    const deletePicture = async () => {
+        await ApiCalls.deletePicture(postId);
+        if (!showDetails) { // this means we are on details screen
+            nav.goBack(); // so we navigate after delete
+        }
+        if (triggerRefresh)
+            triggerRefresh(); // trigger refresh if it was passed
+    }
 
     return (
         <View style={{
@@ -61,7 +70,7 @@ export const PostHeader = ({uploadedBy, userIsOwner, postId, showDetails=true}) 
                             }
                             {
                                 userIsOwner
-                                    ? <Button style={{backgroundColor: 'red'}}>Delete</Button>
+                                    ? <Button onPress={deletePicture} style={{backgroundColor: 'red'}}>Delete</Button>
                                     : <></>
                             }
                         </Button.Group>

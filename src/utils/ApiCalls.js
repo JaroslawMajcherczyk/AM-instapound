@@ -148,6 +148,15 @@ const uploadPicture = async (imageUri, description) => {
     }
 }
 
+const deletePicture = async (pictureId) => {
+    const authToken = await UserAuthorization.getUserAuthToken();
+    const response = await axios.delete(`${PICTURE_URL}/${pictureId}/`, {
+        headers: {
+            'Authorization': `Token ${authToken}`
+        }
+    })
 
+    return response.status === 204;
+}
 
-export default {registerUser, getPictureList, getMyPictureList, getPicture, likePicture, unlikePicture, getProfile, updateProfile, uploadPicture}
+export default {registerUser, getPictureList, getMyPictureList, getPicture, likePicture, unlikePicture, getProfile, updateProfile, uploadPicture, deletePicture}

@@ -38,7 +38,7 @@ const HomeScreen = ({navigation}) => {
             <Header navigation={navigation}/>
             <FlatList
                 data={posts}
-                renderItem={({item}) => <PostListItem post={item} userId={userId}/>}
+                renderItem={({item}) => <PostListItem post={item} userId={userId} triggerRefresh={updatePosts}/>}
                 keyExtractor={post => post.id}
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
             />
