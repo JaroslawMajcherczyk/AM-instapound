@@ -22,25 +22,6 @@ const Header = ({navigation}) => {
     style={styles.icon}
     /> 
     </TouchableOpacity>
-    <TouchableOpacity>
-    <Image 
-    source={{ 
-        uri:'https://img.icons8.com/ios/50/000000/like--v1.png'
-    }}
-    style={styles.icon}
-    /> 
-    </TouchableOpacity>
-    <TouchableOpacity>
-    <View style={styles.unreadMessage}>
-        <Text style={styles.unreadMessageText}>99</Text>
-    </View>
-    <Image 
-    source={{ 
-        uri:'https://img.icons8.com/external-flatart-icons-outline-flatarticons/64/000000/external-message-chat-flatart-icons-outline-flatarticons-5.png'
-    }}
-    style={styles.icon}
-    /> 
-    </TouchableOpacity>
     
 </View>
     
@@ -53,12 +34,11 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         flexDirection: 'row',
-        marginHorizontal: 20,
         height:70,
     },
     iconsContainer: {
         flexDirection: 'row',
-        marginRight: 20,
+        marginRight: 10,
     },
     logo: {
         marginTop: 10,
