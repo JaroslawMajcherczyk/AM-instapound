@@ -1,54 +1,76 @@
 import {Image, StyleSheet, Text, View} from "react-native";
-import React from "react";
-import {Icon, IconButton} from "native-base";
+import React, {useState} from "react";
+import {Button, Icon, IconButton, Modal} from "native-base";
 import {Entypo, FontAwesome, FontAwesome5} from "@expo/vector-icons";
 import DoubleClick from "react-native-double-tap";
-import Toast from "react-native-root-toast";
 import {useNavigation} from "@react-navigation/native";
 
-export const PostHeader = ({uploadedBy}) => (
-    <View style={{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginVertical: 8
-    }}>
-        <View style={{
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
-            alignItems: 'center'
-        }}>
-            <Image source={{uri: uploadedBy.picture}} style={styles.story}/>
-            <Text
-                style={{
-                    marginLeft: 5,
-                    fontWeight: '700',
-                }}>
-                {uploadedBy.username}
-            </Text>
-        </View>
+export const PostHeader = ({uploadedBy, userIsOwner, postId, showDetails=true}) => {
+    const nav = useNavigation();
+    const [showModal, setShowModal] = useState(false);
 
+
+    return (
         <View style={{
             flexDirection: 'row',
-            justifyContent: 'flex-end',
+            justifyContent: 'space-between',
             alignItems: 'center',
-            marginRight: 10
+            marginVertical: 8
         }}>
-            <IconButton
-                icon={<Icon as={Entypo} size={14} name="dots-three-horizontal"/>}
-                _pressed={{
-                    bgColor: 'gray.100'
-                }}
-                onPress={() => {
-                    Toast.show('Additional actions can be here in future releases', {
-                        duration: Toast.durations.SHORT,
-                        position: Toast.positions.CENTER,
-                    });
-                }}
-            />
+            <View style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+                alignItems: 'center'
+            }}>
+                <Image source={{uri: uploadedBy.picture}} style={styles.story}/>
+                <Text
+                    style={{
+                        marginLeft: 5,
+                        fontWeight: '700',
+                    }}>
+                    {uploadedBy.username}
+                </Text>
+            </View>
+
+            <View style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+                alignItems: 'center',
+                marginRight: 10
+            }}>
+                <IconButton
+                    icon={<Icon as={Entypo} size={14} name="dots-three-horizontal"/>}
+                    _pressed={{
+                        bgColor: 'gray.100'
+                    }}
+                    onPress={() => {
+                        setShowModal(true);
+                    }}
+                />
+            </View>
+            <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+                <Modal.Content maxWidth="400px">
+                    <Modal.CloseButton/>
+                    <Modal.Header>More</Modal.Header>
+                    <Modal.Body>
+                        <Button.Group direction={"column"} size="lg">
+                            {
+                                showDetails
+                                    ? <Button onPress={() => nav.navigate('Home', {screen: 'Post Detail', params: {postId: postId}})}>Show Details</Button>
+                                    : <></>
+                            }
+                            {
+                                userIsOwner
+                                    ? <Button style={{backgroundColor: 'red'}}>Delete</Button>
+                                    : <></>
+                            }
+                        </Button.Group>
+                    </Modal.Body>
+                </Modal.Content>
+            </Modal>
         </View>
-    </View>
-)
+    );
+}
 export const PostImage = ({imageUrl, isLiked, likePicture}) => {
 
     const image = (

@@ -4,10 +4,16 @@ import Header from '../components/Home/Header.js'
 import GlobalStyles from "../utils/GlobalStyles";
 import ApiCalls from "../utils/ApiCalls";
 import {PostListItem} from "../components/Post"
+import UserAuthorization from "../utils/UserAuthorization";
 
 const HomeScreen = ({navigation}) => {
     const [posts, setPosts] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
+    const [userId, setUserId] = useState('');
+
+    const getUserId = async () => {
+        setUserId(await UserAuthorization.getUserId());
+    }
 
     const updatePosts = async () => {
         const data = await ApiCalls.getPictureList();
@@ -22,14 +28,17 @@ const HomeScreen = ({navigation}) => {
     }, [refreshing]);
 
     // pobieramy z API posty
-    useEffect(() => {updatePosts()}, []);
+    useEffect(() => {
+        getUserId()
+        updatePosts()
+    }, []);
 
     return (
         <SafeAreaView style={[GlobalStyles.droidSafeArea, styles.container]}>
             <Header navigation={navigation}/>
             <FlatList
                 data={posts}
-                renderItem={({item}) => <PostListItem post={item}/>}
+                renderItem={({item}) => <PostListItem post={item} userId={userId}/>}
                 keyExtractor={post => post.id}
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
             />

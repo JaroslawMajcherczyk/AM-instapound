@@ -12,7 +12,7 @@ const PostDetailScreen = ({route}) => {
     useEffect(async () => {
         const result = await ApiCalls.getPicture(postId);
         setPost(result);
-        setUserIsOwner(result['created_by'] === await UserAuthorization.getUserId())
+        setUserIsOwner(result.uploaded_by.id === await UserAuthorization.getUserId())
     }, [postId])
 
     return (

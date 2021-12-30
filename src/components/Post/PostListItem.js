@@ -4,7 +4,7 @@ import {Divider} from 'react-native-elements'
 import ApiCalls from "../../utils/ApiCalls";
 import {Caption, CommentsSection, Likes, PostFooter, PostHeader, PostImage} from "./PostComponents";
 
-const PostListItem = ({post}) => {
+const PostListItem = ({post, userId}) => {
     const {id, picture, description, like_count, comment_count, is_liked, uploaded_by} = post;
 
     // state needed for likes
@@ -36,7 +36,7 @@ const PostListItem = ({post}) => {
     return (
         <View style={{marginBottom: 15}}>
             <Divider width={1} orientation='vertical'/>
-            <PostHeader uploadedBy={uploaded_by}/>
+            <PostHeader uploadedBy={uploaded_by} userIsOwner={userId === uploaded_by.id} postId={id}/>
             <PostImage imageUrl={picture} isLiked={isLiked} likePicture={likePicture}/>
             <View style={{marginHorizontal: 5}}>
                 <PostFooter isLiked={isLiked} likePicture={likePicture} unlikePicture={unlikePicture} postId={id}/>

@@ -37,7 +37,7 @@ const PostDetail = ({post, userIsOwner}) => {
 
     return (
         <View style={{marginBottom: 15}}>
-            <PostHeader uploadedBy={uploaded_by}/>
+            <PostHeader uploadedBy={uploaded_by} userIsOwner={userIsOwner} postId={id} showDetails={false}/>
             <PostImage imageUrl={picture} isLiked={isLiked} likePicture={likePicture}/>
             <View style={{marginHorizontal: 5, marginBottom:10}}>
                 <PostFooter isLiked={isLiked} likePicture={likePicture} unlikePicture={unlikePicture} postId={id}/>
