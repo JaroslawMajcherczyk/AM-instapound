@@ -10,6 +10,8 @@ export const PostHeader = ({uploadedBy, userIsOwner, postId, triggerRefresh=null
     const nav = useNavigation();
     const [showModal, setShowModal] = useState(false);
 
+    const source = uploadedBy?.picture !== null ? {uri: uploadedBy.picture} : require('../../../assets/images/user-placeholder.png');
+
     const deletePicture = async () => {
         await ApiCalls.deletePicture(postId);
         if (!showDetails) { // this means we are on details screen
@@ -31,7 +33,7 @@ export const PostHeader = ({uploadedBy, userIsOwner, postId, triggerRefresh=null
                 justifyContent: 'flex-start',
                 alignItems: 'center'
             }}>
-                <Image source={{uri: uploadedBy.picture}} style={styles.story}/>
+                <Image source={source} style={styles.story}/>
                 <Text
                     style={{
                         marginLeft: 5,
