@@ -8,15 +8,16 @@ const PostDetailScreen = ({route}) => {
     const {postId} = route.params;
     const [post, setPost] = useState(null)
     const [userIsOwner, setUserIsOwner] = useState(false)
+    const [trig, setTrig] = useState(false)
 
     useEffect(async () => {
         const result = await ApiCalls.getPicture(postId);
         setPost(result);
         setUserIsOwner(result.uploaded_by.id === await UserAuthorization.getUserId())
-    }, [postId])
+    }, [postId, trig])
 
     return (
-        <PostDetail post={post} userIsOwner={userIsOwner}>
+        <PostDetail post={post} userIsOwner={userIsOwner} triggerRefresh={() => setTrig(!trig)}>
         </PostDetail>
     )
 }

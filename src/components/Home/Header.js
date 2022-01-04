@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         flexDirection: 'row',
-        height:70,
+        height:50,
     },
     iconsContainer: {
         flexDirection: 'row',

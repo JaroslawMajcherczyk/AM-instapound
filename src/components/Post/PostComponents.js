@@ -113,7 +113,7 @@ const UnlikePictureIcon = ({unlikePicture}) => (
         onPress={unlikePicture}
     />
 )
-export const PostFooter = ({isLiked, likePicture, unlikePicture, postId}) => {
+export const PostFooter = ({isLiked, likePicture, unlikePicture, postId, openCreateModal}) => {
     const nav = useNavigation();
     return (
         <View style={{flexDirection: 'row'}}>
@@ -127,7 +127,7 @@ export const PostFooter = ({isLiked, likePicture, unlikePicture, postId}) => {
                     size="sm"
                     icon={<Icon as={FontAwesome5} size={30} name="comment" color="black"/>}
                     _pressed={{bg: null}}
-                    onPress={() => nav.navigate('Home', {screen: 'Post Detail', params: {postId: postId}})}
+                    onPress={() => openCreateModal ? openCreateModal() : nav.navigate('Home', {screen: 'Post Detail', params: {postId: postId}})}
                 />
             </View>
         </View>
@@ -153,7 +153,7 @@ export const CommentsSection = ({commentCount}) => (
     </View>
 )
 
-export const CommentList = ({comments}) => {
+export const CommentList = ({comments, openEditModal}) => {
     const [userId, setUserId] = useState('');
 
     const getUserId = async () => {
@@ -185,7 +185,7 @@ export const CommentList = ({comments}) => {
                         style={styles.editStyle}
                         icon={<Icon as={Entypo} size={15} name="edit" color="grey"/>}
                         _pressed={{bg: null}}
-                        onPress={() => console.log('Edit pic!')}
+                        onPress={() => openEditModal(comment.id, comment.content)}
                     />}
                 </View>
                 <Divider width={1} orientation='horizontal'/>

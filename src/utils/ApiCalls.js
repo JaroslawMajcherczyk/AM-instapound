@@ -8,6 +8,7 @@ const BASE_API_URL = 'https://eryknn2.eu.pythonanywhere.com/api';
 const REGISTER_URL = `${BASE_API_URL}/users/register/`;
 const PROFILE_URL = `${BASE_API_URL}/users/profile/`;
 const PICTURE_URL = `${BASE_API_URL}/pictures/`;
+const COMMENT_URL = `${BASE_API_URL}/picture-comments/`;
 
 
 const registerUser = (email, username, password, confirmPassword) => {
@@ -159,4 +160,47 @@ const deletePicture = async (pictureId) => {
     return response.status === 204;
 }
 
-export default {registerUser, getPictureList, getMyPictureList, getPicture, likePicture, unlikePicture, getProfile, updateProfile, uploadPicture, deletePicture}
+
+const createComment = async (pictureId, content) => {
+    const authToken = await UserAuthorization.getUserAuthToken();
+
+    try {
+        await axios.post(
+            `${COMMENT_URL}`,
+            {picture: pictureId, content: content},
+            {headers: {'Authorization': `Token ${authToken}`}}
+        );
+        return 'success'
+    } catch (e) {
+        switch (e.response.status) {
+            case 400:
+                return 'error';
+            default:
+                return 'unavailable';
+        }
+    }
+}
+
+
+const editComment = async (commentId, content) => {
+    const authToken = await UserAuthorization.getUserAuthToken();
+
+    try {
+        await axios.put(
+            `${COMMENT_URL}${commentId}/`,
+            {content: content},
+            {headers: {'Authorization': `Token ${authToken}`}}
+        );
+        return 'success'
+    } catch (e) {
+        switch (e.response.status) {
+            case 400:
+                return 'error';
+            default:
+                return 'unavailable';
+        }
+    }
+}
+
+
+export default {registerUser, getPictureList, getMyPictureList, getPicture, likePicture, unlikePicture, getProfile, updateProfile, uploadPicture, deletePicture, createComment, editComment}
