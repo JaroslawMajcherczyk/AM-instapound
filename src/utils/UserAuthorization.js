@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as SecureStore from 'expo-secure-store';
 import axios from "axios";
-import ApiCalls from "./ApiCalls";
 
 const AUTHORIZATION_KEY = 'user_auth_token';
 const USER_ID = 'user_id';
@@ -33,17 +32,6 @@ const setUserId = async (value) => {
         await SecureStore.deleteItemAsync(USER_ID);
 }
 
-const loginUser = async (token) => {
-    await setUserAuthToken(token);
-    const profile = await ApiCalls.getProfile();
-    await setUserId(profile['id']);
-}
-
-const logoutUser = async () => {
-    await setUserAuthToken(null);
-    await setUserId(null);
-}
-
 const requestUserAuthorization = (login, password) => {
     return axios.post(API_AUTH_TOKEN_URL, {
             username: login,
@@ -60,4 +48,4 @@ const requestUserAuthorization = (login, password) => {
 
 }
 
-export default {requestUserAuthorization, getUserAuthToken, isUserLoggedIn, logoutUser, loginUser, getUserId}
+export default {requestUserAuthorization, getUserAuthToken, setUserAuthToken, isUserLoggedIn, getUserId, setUserId}

@@ -12,6 +12,7 @@ import * as Yup from 'yup'
 import Toast from 'react-native-root-toast'
 
 import UserAuthorization from '../../utils/UserAuthorization'
+import UserLogin from '../../utils/UserLogin'
 import {Button} from "native-base";
 
 
@@ -19,7 +20,7 @@ const processLoginForm = (username, password, navigateToHome, resetForm) => {
     UserAuthorization.requestUserAuthorization(username, password)
         .then(response => {
             if (response.status === 200) {
-                UserAuthorization.loginUser(response.token);
+                UserLogin.loginUser(response.token);
                 Toast.show(`Hello ${username}!`, {
                     duration: Toast.durations.SHORT,
                     position: Toast.positions.CENTER,

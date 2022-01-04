@@ -4,11 +4,11 @@ import {
     DrawerItemList,
     DrawerItem
 } from '@react-navigation/drawer';
-import UserAuthorization from '../../utils/UserAuthorization'
+import UserLogin from '../../utils/UserLogin'
 
 function CustomDrawerContent(props) {
     const logout = () => {
-        UserAuthorization.logoutUser().then(() => {
+        UserLogin.logoutUser().then(() => {
             props.navigation.reset({
                 index: 0,
                 routes: [{name: 'Login'}]

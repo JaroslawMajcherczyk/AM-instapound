@@ -13,6 +13,7 @@ import Validator  from 'email-validator'
 import {Button} from "native-base";
 import ApiCalls from "../../utils/ApiCalls";
 import UserAuthorization from "../../utils/UserAuthorization";
+import UserLogin from "../../utils/UserLogin";
 import Toast from "react-native-root-toast";
 
 
@@ -37,7 +38,7 @@ const SignupForm = ({navigateToHome}) => {
             const registrationResponse = await ApiCalls.registerUser(values.email, values.username, values.password, values.confirmPassword);
             if (registrationResponse.status === 'success') {
                 const loginResponse = await UserAuthorization.requestUserAuthorization(values.username, values.password)
-                await UserAuthorization.loginUser(loginResponse.token);
+                await UserLogin.loginUser(loginResponse.token);
                 Toast.show(`Hello ${values.username}!`, {
                     duration: Toast.durations.SHORT,
                     position: Toast.positions.CENTER,
