@@ -1,8 +1,8 @@
 import React, {useState} from "react";
 import ApiCalls from "../../utils/ApiCalls";
-import {Text, View} from "react-native";
+import {ScrollView, Text, View} from "react-native";
 import {Divider} from "react-native-elements";
-import {Caption, CommentList, CommentsSection, Likes, PostFooter, PostHeader, PostImage} from "./PostComponents";
+import {Caption, CommentList, Likes, PostFooter, PostHeader, PostImage} from "./PostComponents";
 
 const PostDetail = ({post, userIsOwner}) => {
     if (!post) return <View></View>
@@ -36,7 +36,7 @@ const PostDetail = ({post, userIsOwner}) => {
     }
 
     return (
-        <View style={{marginBottom: 15}}>
+        <ScrollView>
             <PostHeader uploadedBy={uploaded_by} userIsOwner={userIsOwner} postId={id} showDetails={false}/>
             <PostImage imageUrl={picture} isLiked={isLiked} likePicture={likePicture}/>
             <View style={{marginHorizontal: 5, marginBottom:10}}>
@@ -48,7 +48,7 @@ const PostDetail = ({post, userIsOwner}) => {
             </View>
             <Divider width={1} orientation='horizontal'/>
             <CommentList comments={picture_comments} />
-        </View>
+        </ScrollView>
     )
 }
 

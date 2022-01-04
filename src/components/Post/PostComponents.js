@@ -1,14 +1,15 @@
-import {FlatList, Image, StyleSheet, Text, View} from "react-native";
-import React, {useState} from "react";
+import {Image, StyleSheet, Text, View} from "react-native";
+import React, {useEffect, useState} from "react";
 import {Button, Icon, IconButton, Modal} from "native-base";
 import {Entypo, FontAwesome, FontAwesome5} from "@expo/vector-icons";
 import DoubleClick from "react-native-double-tap";
 import {useNavigation} from "@react-navigation/native";
 import ApiCalls from "../../utils/ApiCalls";
 import {Divider} from "react-native-elements";
-import { format } from "date-fns";
+import {format} from "date-fns";
+import UserAuthorization from "../../utils/UserAuthorization";
 
-export const PostHeader = ({uploadedBy, userIsOwner, postId, triggerRefresh=null, showDetails=true}) => {
+export const PostHeader = ({uploadedBy, userIsOwner, postId, triggerRefresh = null, showDetails = true}) => {
     const nav = useNavigation();
     const [showModal, setShowModal] = useState(false);
 
@@ -69,7 +70,10 @@ export const PostHeader = ({uploadedBy, userIsOwner, postId, triggerRefresh=null
                         <Button.Group direction={"column"} size="lg">
                             {
                                 showDetails
-                                    ? <Button onPress={() => nav.navigate('Home', {screen: 'Post Detail', params: {postId: postId}})}>Show Details</Button>
+                                    ? <Button onPress={() => nav.navigate('Home', {
+                                        screen: 'Post Detail',
+                                        params: {postId: postId}
+                                    })}>Show Details</Button>
                                     : <></>
                             }
                             {
@@ -150,15 +154,25 @@ export const CommentsSection = ({commentCount}) => (
 )
 
 export const CommentList = ({comments}) => {
+    const [userId, setUserId] = useState('');
 
-    const Comment = ({comment}) => {
+    const getUserId = async () => {
+        setUserId(await UserAuthorization.getUserId());
+    }
+
+    // pobieramy z API posty
+    useEffect(() => {
+        getUserId()
+    }, []);
+
+    const Comment = ({comment, userIsCreator}) => {
         const source = comment.created_by.picture !== null ? {uri: comment.created_by.picture} : require('../../../assets/images/user-placeholder.png');
         const formattedDate = format(new Date(comment.created_at), "yyyy-MM-dd kk:mm");
 
         return (
             <View>
                 <View style={styles.commentOuterView}>
-                    <Image style={styles.story} source={source} />
+                    <Image style={styles.story} source={source}/>
                     <View style={{marginLeft: 10}}>
                         <Text>
                             <Text style={{fontWeight: 'bold'}}>{comment.created_by.username} </Text>
@@ -166,6 +180,13 @@ export const CommentList = ({comments}) => {
                         </Text>
                         <Text style={styles.dateStyle}>{formattedDate}</Text>
                     </View>
+                    {!userIsCreator ? null : <IconButton
+                        size="sm"
+                        style={styles.editStyle}
+                        icon={<Icon as={Entypo} size={15} name="edit" color="grey"/>}
+                        _pressed={{bg: null}}
+                        onPress={() => console.log('Edit pic!')}
+                    />}
                 </View>
                 <Divider width={1} orientation='horizontal'/>
             </View>
@@ -173,12 +194,9 @@ export const CommentList = ({comments}) => {
     }
 
     return (
-        <FlatList
-            style={{height: 200}}
-            data={comments}
-            renderItem={({item}) => <Comment comment={item}/>}
-            keyExtractor={comment => comment.id}
-        />
+        <View>
+            {comments.map(item => <Comment comment={item} key={item.id} userIsCreator={item.created_by.id === userId}/>)}
+        </View>
     );
 }
 
@@ -207,5 +225,10 @@ const styles = StyleSheet.create({
     dateStyle: {
         fontStyle: 'italic',
         color: 'gray'
+    },
+    editStyle: {
+        alignSelf: "flex-end",
+        marginLeft: 'auto',
+        marginRight: 12
     }
 })
