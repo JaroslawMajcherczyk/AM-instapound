@@ -4,6 +4,7 @@ import uuid from 'react-native-uuid';
 
 import UserAuthorization from "./UserAuthorization";
 
+const API_DOC_URL = 'https://eryknn2.eu.pythonanywhere.com/docs/';
 const BASE_API_URL = 'https://eryknn2.eu.pythonanywhere.com/api';
 const REGISTER_URL = `${BASE_API_URL}/users/register/`;
 const PROFILE_URL = `${BASE_API_URL}/users/profile/`;
@@ -203,4 +204,4 @@ const editComment = async (commentId, content) => {
 }
 
 
-export default {registerUser, getPictureList, getMyPictureList, getPicture, likePicture, unlikePicture, getProfile, updateProfile, uploadPicture, deletePicture, createComment, editComment}
+export default {registerUser, getPictureList, getMyPictureList, getPicture, likePicture, unlikePicture, getProfile, updateProfile, uploadPicture, deletePicture, createComment, editComment, API_DOC_URL}
